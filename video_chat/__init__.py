@@ -1,5 +1,5 @@
 from otree.api import *
-
+import requests
 
 doc = """
 Video chat between 2 players
@@ -21,15 +21,19 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    pass
+   recording = models.StringField()
+
 
 
 # PAGES
-class Main(Page):
+class Call1(Page):
     @staticmethod
     def live_method(player, data):
+        player.recording = data['value']
         if 'video_chat' in data:
             return {3 - player.id_in_group: data}
 
+class Last(Page):
+    pass
 
-page_sequence = [Main]
+page_sequence = [Call1, Last]

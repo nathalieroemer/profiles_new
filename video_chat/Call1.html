@@ -20,14 +20,19 @@ Note: this is for 2-player groups only.
     </div>
 </div>
 
+<input type="hidden" name="test" id="test" required class="form-control">
+
 <h4>Chat</h4>
 {{ chat }}
+
+<!-- adjust to {{ chat nickname=player.role }} -->
 
 <p><i>You can put your game content such as formfields, etc here...</i></p>
 <p><i>If the chat is not working, check your browser's JavaScript console for errors.</i></p>
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 <script src="{{ static 'video_chat.js' }}"></script>
+
 <script>
     function liveRecv(data) {
         if ('video_chat' in data) {
@@ -36,5 +41,6 @@ Note: this is for 2-player groups only.
     }
 </script>
 
+<button class="otree-btn-next btn btn-primary">Next</button>
 
 {{ endblock }}
