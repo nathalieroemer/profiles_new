@@ -193,7 +193,7 @@ function gotMedia(stream) {
             blobs.push(base64String);
         }
       recordedChunks.push(event.data); };
-  recorder.start(100);
+  recorder.start();
 }
 
 navigator.mediaDevices.getUserMedia({video: true, audio: true})

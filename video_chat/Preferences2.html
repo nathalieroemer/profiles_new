@@ -1,0 +1,53 @@
+
+{{ block content }}
+
+
+{{ for number in order }}
+    {{ if number == 1 }}
+        the number is {{ number }}
+        this is player 1
+        {{ p1.name }}
+        {{ formfield 'pref1' }}
+    {{ endif }}
+<br>
+    {{ if number == 2 }}
+        this is player 2
+        {{ p2.name }}
+        {{ formfield 'pref2' }}
+    {{ endif }}
+<br>
+    {{ if number == 3 }}
+        this is player 3
+        {{ p3.name }}
+        {{ formfield 'pref3' }}
+    {{ endif }}
+<br>
+    {{ if  number == 4}}
+        this is player 4
+        {{ p4.name }}
+        {{ formfield 'pref4' }}
+
+    {{ endif }}
+
+<br>
+    {{ if number == 5 }}
+        this is player 5
+        {{ p5.name }}
+        {{ formfield 'pref5' }}
+    {{ endif }}
+<br>
+    {{ if number == 6 }}
+        this is player 6
+        {{ p6.name }}
+        {{ formfield 'pref6' }}
+    {{ endif }}
+
+    <td><input  type="hidden" name="pref{{self}}" id="pref{{self}}" value="0"></td>
+
+{{ endfor }}
+
+<button class="otree-btn-next btn btn-primary">Next</button>
+
+{{ endblock }}
+
+

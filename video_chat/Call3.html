@@ -22,16 +22,16 @@ Note: this is for 2-player groups only.
 
 <input type="hidden" name="test" id="test" required class="form-control">
 
-<h4>Chat</h4>
-{{ if player.id_in_group == 1 or player.id_in_group == 2 }}
+<h4>Chat page 3</h4>
+{{ if player.id_in_group == 1 or player.id_in_group == 4 }}
     {% chat channel=1 %}
 {{ endif }}
 
-{{ if player.id_in_group == 3 or player.id_in_group == 4 }}
+{{ if player.id_in_group == 3 or player.id_in_group == 6 }}
     {% chat channel=2 %}
 {{ endif }}
 
-{{ if player.id_in_group == 5 or player.id_in_group == 6 }}
+{{ if player.id_in_group == 5 or player.id_in_group == 2 }}
     {% chat channel=3 %}
 {{ endif }}
 

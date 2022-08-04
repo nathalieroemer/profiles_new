@@ -1,0 +1,44 @@
+{{ block content }}
+
+
+{{ for number in order }}
+    {{ if group.get_player_by_id(1) = number }}
+        erste anzeige
+        this is player {{ p.id_in_group }}
+    <td><input class="form-check-input" type="number" name="pref{{ p.id_in_group }}" value="True"></td>
+    </tr>
+    {{ endif }}
+<br>
+    {{ if group.get_player_by_id(2) = number }}
+zweite anzeige
+        this is player 2
+    <td><input class="form-check-input" type="number" name="pref{{ p.id_in_group }}" value="True"></td>
+    </tr>
+    {{ endif }}
+<br>
+    {{ if p.id_in_group == third_id }}
+        this is player {{ p.id_in_group }}
+    <td><input class="form-check-input" type="number" name="pref{{ p.id_in_group }}" value="True"></td>
+    </tr>
+    {{ endif }}
+<br>
+    {{ if p.id_in_group == fourth_id }}
+        this is player  {{ p.id_in_group }}
+    <td><input class="form-check-input" type="number" name="pref{{ p.id_in_group }}" value="True"></td>
+    </tr>
+    {{ endif }}
+<br>
+    {{ if p.id_in_group == fifth_id }}
+        this is player {{ p.id_in_group }}
+    <td><input class="form-check-input" type="number" name="pref{{ p.id_in_group }}" value="True"></td>
+
+    {{ endif }}
+<br>
+    {{ if p.id_in_group == player.id_in_group }}
+        this is the player herself
+    <td><input  type="hidden" name="pref{{ p.id_in_group }}" value="0"></td>
+
+    {{ endif }}
+<br>
+{{ endfor }}
+{{ endblock }}

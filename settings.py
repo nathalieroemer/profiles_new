@@ -1,7 +1,7 @@
 from os import environ
 
 SESSION_CONFIGS = [
-    dict(name='video_chat', app_sequence=['video_chat'], num_demo_participants=2),
+    dict(name='video_chat', app_sequence=['video_chat'], num_demo_participants=6),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
@@ -13,7 +13,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = []
+PARTICIPANT_FIELDS = ['order', 'partner']
 SESSION_FIELDS = []
 
 # ISO-639 code
