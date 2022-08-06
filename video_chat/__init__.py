@@ -30,10 +30,6 @@ class Player(BasePlayer):
    name = models.StringField()
 
 class Instructions(Page):
-    form_model = 'player'
-    form_fields = ['name']
-
-
     @staticmethod
     def before_next_page(player, timeout_happened):
         import random
@@ -154,15 +150,14 @@ class WaitPage3(WaitPage):
             print(matches_p1)
             match_p1 = max(matches_p1, key=matches_p1.get)
             print("Maximum value:", match_p1)
-            ## why does this not work -.-
             for p in group.get_players():
                 participant = p.participant
                 if p.id_in_group == 1:
-                    participant.partner == match_p1
+                    participant.partner = match_p1
                 else:
-                    participant.partner == 0
+                    participant.partner = 0
 
-                print(participant.partner)
+            print(p.participant.partner)
 
 
         ## get participantid of gorup member p2 and store it as particpant variable for member 1 to have their matches
@@ -174,4 +169,4 @@ class Last(Page):
     pass
 
 # page_sequence = [Instructions, Call1, WaitPage1, Call2, WaitPage2, Call3, WaitPage3, Last]
-page_sequence = [Instructions, WaitPage1, Preferences2, WaitPage3, Last]
+page_sequence = [WaitPage1, Preferences2, WaitPage3, Last]

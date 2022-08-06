@@ -1,0 +1,86 @@
+{% extends "global/Page.html" %}
+{% load otree staticfiles %}
+{% block title %}
+
+        Welcome
+{% endblock %}
+
+
+{% block content %}
+
+
+
+    <p>You are invited to participate in this research project. Your participation is completely voluntary and anonymous. Please read the following Statement of Consent.
+        With a click on "START - I  consent to take part in the study", you acknowledge and approve the Statement of Consent.
+        <br>
+        <br>
+          <button type="button" onclick="showFunction()">Click to show/hide Statement of Consent</button>
+
+<div id="showinstructions" style="display: none">
+    <p>
+        <strong>Consent Form</strong> <br>
+<strong>University of Fribourg, Department of Economics</strong> <br>
+
+<small>
+You are invited to participate in a research study. The study is conducted by researchers in the Department of
+    Economics from the University of Fribourg, Switzerland and funded by the Department
+    of Economics of the University of Fribourg.
+    The purpose of this research is understanding human decision-making. In the study, you will make decisions that have
+    payoff consequences for you. Your participation starts by clicking the “START - I consent to take part in the
+    study”-button.
+<br><br>
+Your participation in this study will take about 60 minutes. For your participation in the study, you will receive
+    EUR 2, plus an additional amount based on your decisions during the study. The detailed compensation scheme will
+    be explained to you in the instructions of the study. Importantly, the determination of the additional amount is, first, at no means random and, second, not depending on the decisions of other participants.
+<br><br>
+
+    There are no risks associated with this research. The benefits from this study include monetary payment as indicated by the researchers.
+
+Your participation in this research is completely voluntary and anonymous. If you choose to participate, you may change your mind and leave the study at any time. You may also withdraw your participation or your data at any time. Refusal to participate, stopping your participation or withdrawing your data will involve no penalty other than non-eligibility for compensation.
+
+Your data will be kept completely confidential by not recording your name in combination with your data. When the research is completed, the data that is kept does not include personal information, only choices are kept. The researchers who have requested your participation will not share any personal information about you.
+    <br><br>
+
+
+   <strong>I have read the description of this study, my questions have been answered, and I give my
+    consent to
+         participate. Consent is indicated by clicking the “START - I consent to take part in the study”-button.</strong>
+<br><br>
+    ----------------------------------------------------------<br>
+    Note:<br>
+For questions or concerns regarding this research, please contact: frilab, Department of Economics, University of Fribourg, Bd de Pérolles 90, CH-1700 Fribourg. Email: frilab (at) unifr.ch.
+
+<br><br>The University of Fribourg, Department of Psychology, has an Ethics Committee on the use of human subjects in research to which complaints or problems concerning any research project may, and should, be reported if they arise. If you have concerns about this project, please contact Petra Klumb, Department of Psychology, University of Fribourg, R. Fauciny 2, CH-1700 Fribourg. Email: petra.klumb (at) unifr.ch.
+    <br><br>
+    The conduction of this study (registration number: #471) has been approved by the Ethics Committee
+    (Department of Psychology, University of Fribourg) on 30 July 2019.
+        </small>
+</p>
+
+</div>
+
+
+      <p>
+               ATTENTION: To avoid technical issues, you must keep the browser window open at any time. Do not
+          refresh the browser window,
+          and do
+          not go back to the previous page. You must disable incognito or private mode in your browser.
+    </p>
+
+  <div> <button class="btn btn-primary btn-large">START - I  consent to take part in the study</button></div>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function showFunction() {
+    var x = document.getElementById("showinstructions");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+{% endblock %}

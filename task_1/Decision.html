@@ -1,0 +1,39 @@
+{% extends "global/Page.html" %}
+
+{% block title %}
+    Period {{ subsession.round_number }}/{{ Constants.num_rounds }}
+{% endblock %}
+
+{% block content %}
+<p>Please choose your decision variables below.</p>
+
+
+
+
+ <div class="row">
+    <table class="table">
+
+        {% for field in form %}
+        <tr>
+            <td>{{ field.label }}</td>
+            <td>
+
+                <p>{{ field }}</p>
+                {% if field.errors %}<p class="text-danger">{{field.errors}}</p>{% endif %}
+            </td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+    </div>
+
+  <div> <button class="otree-btn-next btn btn-primary">Confirm</button></div>
+
+
+
+
+{% endblock %}
+
+
+
