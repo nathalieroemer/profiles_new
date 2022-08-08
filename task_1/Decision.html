@@ -9,21 +9,84 @@
 
 
 
-
  <div class="row">
     <table class="table">
-
-        {% for field in form %}
         <tr>
-            <td>{{ field.label }}</td>
+            <td> Location </td>
             <td>
+                <form>
+                       <div class="row">
+                    <div class="col-md" align="center">
+                        <label for="l1">Business district</label>
+                    </div>
+                    <div class="col-md" align="center">
+                        <label for="l2">School</label>
+                    </div>
+                    <div class="col-md" align="center">
+                        <label for="l3">Stadium</label>
+                    </div>
 
-                <p>{{ field }}</p>
-                {% if field.errors %}<p class="text-danger">{{field.errors}}</p>{% endif %}
+
+                    <div class="w-100"></div>
+
+                    <div class="col-md" align="center">
+                        <input type="radio" id="l1" name="location" value="1" required oninvalid="this.setCustomValidity('Please choose a location.')" onclick="this.setCustomValidity('')">
+                    </div>
+                    <div class="col-md" align="center">
+                        <input type="radio" id="l2" name="location" value="2" onclick="document.getElementById('l1').setCustomValidity('')">
+                    </div>
+                    <div class="col-md" align="center">
+                        <input type="radio" id="l3" name="location" value="3" onclick="document.getElementById('l1').setCustomValidity('')">
+                    </div>
+
+                    </div>
+                </form>
             </td>
-
         </tr>
-        {% endfor %}
+        <tr>
+            <td> Sugar content (in %): </td>
+            <td>
+                <p>  <input type="number" id="sugar" name="sugar" step="0.1" lang="en" min="0" max=20"></p>
+            </td>
+        </tr>
+          <tr>
+            <td> Lemon (in %): </td>
+            <td>
+                <p>  <input type="number" id="lemon" name="lemon" step="0.1" lang="en" min="0" max=20"></p>
+            </td>
+        </tr>
+        <tr>
+            <td> Color : </td>
+            <td>
+                <form>
+                       <div class="row">
+                    <div class="col-md" align="center">
+                        <label for="c1">Green</label>
+                    </div>
+                    <div class="col-md" align="center">
+                        <label for="c2">Pink</label>
+                    </div>
+
+                    <div class="w-100"></div>
+
+                    <div class="col-md" align="center">
+                        <input type="radio" id="c1" name="color" value="1" required oninvalid="this.setCustomValidity('Please choose a location.')" onclick="this.setCustomValidity('')">
+                    </div>
+                    <div class="col-md" align="center">
+                        <input type="radio" id="c2" name="color" value="2" onclick="document.getElementById('c1').setCustomValidity('')">
+                    </div>
+
+                    </div>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td> Price: </td>
+            <td>
+                <p>  <input type="number" id="price" name="price" step="0.1" lang="en" min="0.1" max="10" ></p>
+
+            </td>
+        </tr>
     </table>
 
     </div>
@@ -31,9 +94,20 @@
   <div> <button class="otree-btn-next btn btn-primary">Confirm</button></div>
 
 
+<script>
+    document.onload = set_defaults()
+    function set_defaults() {
+  document.getElementById("sugar").defaultValue = "{{sugar}}";
+  document.getElementById("lemon").defaultValue = "{{lemon}}";
+  document.getElementById("price").defaultValue = "{{price}}";
 
+  location_button = document.getElementById("l"+"{{location}}");
+  location_button.checked=true;
+
+  color_button = document.getElementById("c"+"{{color}}");
+  color_button.checked=true;
+
+}
+</script>
 
 {% endblock %}
-
-
-

@@ -1,7 +1,4 @@
 from otree.api import *
-import requests
-import random
-import itertools
 
 doc = """
 Introduction

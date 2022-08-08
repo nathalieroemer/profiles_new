@@ -16,7 +16,7 @@ SESSION_CONFIG_DEFAULTS = dict(
 PARTICIPANT_FIELDS = ['order', 'partner', 'overallprofit','overallpayoffrealworld', 'finallocation','finalprofit',
                       'maxprofit','locdefault','locdefaulth1','locdefaulth2', 'stdvsugar', 'stdvlemon', 'stdvprice',
                       'stdvprice', 'stdvsugarh1','stdvlemonh1','stdvpriceh1','stdvsugarh2', 'stdvlemonh2',
-                      'stdvpriceh2','stdvprofit','stdvprofith1','stdvprofith2','maxexpphase','durexpphase']
+                      'stdvpriceh2','stdvprofit','stdvprofith1','stdvprofith2','maxexpphase','durexpphase', 'initial_sugar']
 SESSION_FIELDS = []
 
 # ISO-639 code

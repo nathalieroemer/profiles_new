@@ -168,5 +168,5 @@ class WaitPage3(WaitPage):
 class Last(Page):
     pass
 
-# page_sequence = [Instructions, Call1, WaitPage1, Call2, WaitPage2, Call3, WaitPage3, Last]
-page_sequence = [WaitPage1, Preferences2, WaitPage3, Last]
+page_sequence = [Instructions, Call1, WaitPage1, Call2, WaitPage2, Call3, WaitPage3, Last]
+#page_sequence = [WaitPage1, Preferences2, WaitPage3, Last]

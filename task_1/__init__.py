@@ -2,6 +2,7 @@ from otree.api import *
 import requests
 import statistics
 
+
 doc = """
 Introduction
 """
@@ -73,7 +74,7 @@ class Player(BasePlayer):
     sugar = models.FloatField(
         min=0, max=20,
         verbose_name='Sugar content (in %):',
-      #  widget=widgets.NumberInput(attrs={'step': '0.1'}),
+       #   widget=widgets.NumberWidget(attrs={'step': '0.1'}),
     )
 
     lemon = models.FloatField(
@@ -81,6 +82,7 @@ class Player(BasePlayer):
         verbose_name='Lemon content (in %):',
       #  widget=widgets.NumberInput(attrs={'step': '0.1'}),
     )
+
     price = models.FloatField(
         # min=c(0.0), max=c(10.0),
         verbose_name='Price of one cup (in thaler):',
@@ -96,6 +98,7 @@ class Player(BasePlayer):
     report = models.LongStringField(doc="text of reporting field, free form text subjects reported", verbose_name='',
                                     blank=True)
     reportlength = models.IntegerField(doc="length of reported text")
+
 
     # TO INCLUDE STANDARD DEVIATIONS from ROUND TO ROUND.
     def set_profit(player):
@@ -139,6 +142,7 @@ class Player(BasePlayer):
 
     def set_payoff(player):
         player.payoff = (player.profit * 0.5)
+
 
     def set_expphase(player):
         if player.location == 1:
@@ -247,25 +251,32 @@ class Decision(Page):
     form_model = 'player'
     form_fields = ['location', 'sugar', 'lemon', 'color', 'price']
 
-    def is_displayed(player):
+    @staticmethod
+    def vars_for_template(player):
         if player.round_number == 1:
-            setattr(player, 'location', 1)
-            setattr(player, 'sugar', 5.2)
-            setattr(player, 'lemon', 7.0)
-            setattr(player, 'color', 1)
-            setattr(player, 'price', 8.2)
-            return True
-        else:
-            if player.round_number > 1:
-                fields = ['location', 'sugar', 'lemon', 'color', 'price']
-                for f in fields:
-                    oldvalue = getattr(player.in_round(player.round_number - 1), f)
-                    setattr(player, f, oldvalue)
-                return True
-            else:
-                pass
+            location = 1
+            sugar = 5.2
+            lemon = 7.0
+            color = 1
+            price = 8.2
+            return dict(sugar=sugar,
+                        location=location,
+                        lemon=lemon,
+                        color=color,
+                        price=price)
+        if player.round_number > 1:
+            sugar = player.in_round(player.round_number - 1).sugar
+            location = player.in_round(player.round_number - 1).location
+            lemon = player.in_round(player.round_number - 1).lemon
+            color = player.in_round(player.round_number - 1).color
+            price = player.in_round(player.round_number - 1).price
+            return dict(sugar=sugar,
+                        location=location,
+                        lemon=lemon,
+                        color=color,
+                        price=price)
 
-
+    @staticmethod
     def before_next_page(player, timeout_happened):
         player.set_profit()
         player.set_payoff()
@@ -274,18 +285,21 @@ class Decision(Page):
 
 
 class Results(Page):
+    @staticmethod
     def before_next_page(player, timeout_happened):
         participant = player.participant
         if player.round_number == Constants.num_rounds:
-            player.participant.vars['overallprofit'] = sum([p.profit for p in player.in_all_rounds()])
-            participant.vars['overallpayoffrealworld'] = c(participant.payoff_plus_participation_fee())
-            participant.vars['finallocation'] = player.in_round(20).location
-            participant.vars['finalprofit'] = player.in_round(20).profit
-            participant.vars['maxprofit'] = max([p.profit for p in player.in_all_rounds()])
-            participant.vars['locdefault'] = ([p.location for p in player.in_all_rounds()]).count(1) #self.player.locnotdefault.in_all_rounds().count(True)
-            participant.vars['locdefaulth1'] = ([p.location for p in player.in_rounds(1, 10)]).count(1)
-            participant.vars['locdefaulth2'] = ([p.location for p in player.in_rounds(11, 20)]).count(1)
-            participant.vars['stdvsugar'] = statistics.stdev(([p.sugar for p in player.in_all_rounds()]),
+            ## TODO: can they be replaced by regular player. variables?
+            last_round = Constants.num_rounds
+            participant.overallprofit = sum([p.profit for p in player.in_all_rounds()])
+            participant.overallpayoffrealworld= cu(participant.payoff_plus_participation_fee())
+            participant.finallocation = player.in_round(last_round).location
+            participant.finalprofit = player.in_round(last_round).profit
+            participant.maxprofit = max([p.profit for p in player.in_all_rounds()])
+            participant.locdefault = ([p.location for p in player.in_all_rounds()]).count(1) #self.player.locnotdefault.in_all_rounds().count(True)
+            participant.locdefaulth1= ([p.location for p in player.in_rounds(1, last_round)]).count(1)
+#            participant.locdefaulth2 = ([p.location for p in player.in_rounds(11, 20)]).count(1)
+            participant.stdvsugar = statistics.stdev(([p.sugar for p in player.in_all_rounds()]),
                                                                   xbar=(statistics.mean(
                                                                       [p.sugar for p in player.in_all_rounds()])))
             participant.vars['stdvlemon'] = statistics.stdev(([p.lemon for p in player.in_all_rounds()]),
@@ -294,54 +308,57 @@ class Results(Page):
             participant.vars['stdvprice'] = statistics.stdev(([p.price for p in player.in_all_rounds()]),
                                                                   xbar=(statistics.mean(
                                                                       [p.price for p in player.in_all_rounds()])))
-            participant.vars['stdvsugarh1'] = statistics.stdev(([p.sugar for p in player.in_rounds(1,10)]),
+            participant.vars['stdvsugarh1'] = statistics.stdev(([p.sugar for p in player.in_rounds(1,last_round)]),
                                                                     xbar=(statistics.mean(
-                                                                        [p.sugar for p in player.in_rounds(1,10)])))
-            participant.vars['stdvlemonh1'] = statistics.stdev(([p.lemon for p in player.in_rounds(1,10)]),
+                                                                        [p.sugar for p in player.in_rounds(1,last_round)])))
+            participant.vars['stdvlemonh1'] = statistics.stdev(([p.lemon for p in player.in_rounds(1,last_round)]),
                                                                   xbar=(statistics.mean(
-                                                                      [p.lemon for p in player.in_rounds(1,10)])))
-            participant.vars['stdvpriceh1'] = statistics.stdev(([p.price for p in player.in_rounds(1,10)]),
+                                                                      [p.lemon for p in player.in_rounds(1,last_round)])))
+            participant.vars['stdvpriceh1'] = statistics.stdev(([p.price for p in player.in_rounds(1,last_round)]),
                                                                   xbar=(statistics.mean(
-                                                                      [p.price for p in player.in_rounds(1,10)])))
-            participant.vars['stdvsugarh2'] = statistics.stdev(([p.sugar for p in player.in_rounds(11,20)]),
-                                                                    xbar=(statistics.mean(
-                                                                        [p.sugar for p in player.in_rounds(11,20)])))
-            participant.vars['stdvlemonh2'] = statistics.stdev(([p.lemon for p in player.in_rounds(11,20)]),
-                                                                  xbar=(statistics.mean(
-                                                                      [p.lemon for p in player.in_rounds(11,20)])))
-            participant.vars['stdvpriceh2'] = statistics.stdev(([p.price for p in player.in_rounds(11,20)]),
-                                                                  xbar=(statistics.mean(
-                                                                      [p.price for p in player.in_rounds(11,20)])))
+                                                                      [p.price for p in player.in_rounds(1,last_round)])))
+#            participant.vars['stdvsugarh2'] = statistics.stdev(([p.sugar for p in player.in_rounds(11,20)]),
+#                                                                    xbar=(statistics.mean(
+#                                                                        [p.sugar for p in player.in_rounds(11,20)])))
+#            participant.vars['stdvlemonh2'] = statistics.stdev(([p.lemon for p in player.in_rounds(11,20)]),
+#                                                                  xbar=(statistics.mean(
+#                                                                      [p.lemon for p in player.in_rounds(11,20)])))
+#            participant.vars['stdvpriceh2'] = statistics.stdev(([p.price for p in player.in_rounds(11,20)]),
+#                                                                  xbar=(statistics.mean(
+#                                                                      [p.price for p in player.in_rounds(11,20)])))
             participant.vars['stdvprofit'] = statistics.stdev(
                 ([p.profit for p in player.in_all_rounds()]),
                 xbar=(statistics.mean(
                     [p.profit for p in player.in_all_rounds()])))
             participant.vars['stdvprofith1'] = statistics.stdev(
-                ([p.profit for p in player.in_rounds(1, 10)]),
+                ([p.profit for p in player.in_rounds(1, last_round)]),
                 xbar=(statistics.mean(
-                    [p.profit for p in player.in_rounds(1, 10)])))
-            participant.vars['stdvprofith2'] = statistics.stdev(
-                ([p.profit for p in player.in_rounds(11,20)]),
-                xbar=(statistics.mean(
-                    [p.profit for p in player.in_rounds(11,20)])))
+                    [p.profit for p in player.in_rounds(1, last_round)])))
+#            participant.vars['stdvprofith2'] = statistics.stdev(
+#                ([p.profit for p in player.in_rounds(11,20)]),
+#                xbar=(statistics.mean(
+#                    [p.profit for p in player.in_rounds(11,20)])))
             participant.vars['maxexpphase']= max([p.maxexpphase for p in player.in_all_rounds()])
             participant.vars['durexpphase']= sum([p.durexpphase for p in player.in_all_rounds()])
         else:
             pass
 
-
+## TODO: think about whether to include this in some form
 class Report(Page):
     form_model = 'player'
     form_fields = ['report']
-    def is_displayed(self):
-       if (self.round_number == 3) or (self.round_number == 6 ) or (self.round_number == 9) or (
-                self.round_number == 12):
+
+    @staticmethod
+    def is_displayed(player):
+       if (player.round_number == 3) or (player.round_number == 6 ) or (player.round_number == 9) or (
+                player.round_number == 12):
            return True
        else:
             return False
+
+    @staticmethod
     def vars_for_template(player):
         return player.vars_for_template()
 
-
-page_sequence = [Decision,Results,Report
+page_sequence = [Decision,Results
 ]
