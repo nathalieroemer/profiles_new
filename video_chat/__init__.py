@@ -15,8 +15,22 @@ class Constants(BaseConstants):
 class Subsession(BaseSubsession):
     pass
 
+def creating_session(subsession):
+    import itertools
+    if subsession.round_number == 1:
+        treat = itertools.cycle([1, 0])
+        num_group_ids = []
+        for group in subsession.get_groups():
+            group.treat_video = next(treat)
+            num_group_ids.append(group.id_in_subsession)
+            group.session.num_groups = max(num_group_ids)
+            print(group.session.num_groups, "this is the number of groups")
+            for player in group.get_players():
+                participant = player.participant
+                participant.treat_video = group.treat_video
+
 class Group(BaseGroup):
-    pass
+    treat_video = models.IntegerField()
 
 
 class Player(BasePlayer):
@@ -28,8 +42,12 @@ class Player(BasePlayer):
    pref5 = models.IntegerField()
    pref6 = models.IntegerField()
    name = models.StringField()
+   team = models.IntegerField()
+
 
 class Instructions(Page):
+    form_model = 'player'
+    form_fields = ['name']
     @staticmethod
     def before_next_page(player, timeout_happened):
         import random
@@ -37,12 +55,17 @@ class Instructions(Page):
         participant.order = [1,2,3,4,5,6]
         participant.order.remove(player.id_in_group)
         random.shuffle(participant.order)
+        participant.group6mem = player.group.id_in_subsession
 
         print(participant.order)
 
 # PAGES
 class Call1(Page):
-    #timeout_seconds = 30
+    @staticmethod
+    def is_displayed(player):
+        return player.group.treat_video ==1
+
+        #timeout_seconds = 30
     @staticmethod
     def live_method(player, data):
         player.recording = data['value']
@@ -64,9 +87,16 @@ class Call1(Page):
                 return {5: data}
 
 class WaitPage1(WaitPage):
-    pass
+    @staticmethod
+    def is_displayed(player):
+        return player.group.treat_video ==1
+
 
 class Call2(Page):
+    @staticmethod
+    def is_displayed(player):
+        return player.group.treat_video ==1
+
     #timeout_seconds = 30
     @staticmethod
     def live_method(player, data):
@@ -89,9 +119,16 @@ class Call2(Page):
                 return {5: data}
 
 class WaitPage2(WaitPage):
-    pass
+    @staticmethod
+    def is_displayed(player):
+        return player.group.treat_video ==1
+
 
 class Call3(Page):
+    @staticmethod
+    def is_displayed(player):
+        return player.group.treat_video ==1
+
     #timeout_seconds = 60
     @staticmethod
     def live_method(player, data):
@@ -143,30 +180,83 @@ class WaitPage3(WaitPage):
             p4 = group.get_player_by_id(4)
             p5 = group.get_player_by_id(5)
             p6 = group.get_player_by_id(6)
-           # matches_p1 =  [dict(member=2, weight=p1.pref2 + p2.pref1), dict(member=3, weight=p1.pref3 + p3.pref1), dict(member=4, weight=p1.pref4 + p4.pref1),
-           #                dict(member=5, weight=p1.pref5 + p5.pref1), dict(member=6, weight=p1.pref6 + p6.pref1)]
-            matches_p1 = {2: p1.pref2 + p2.pref1, 3: p1.pref3 + p3.pref1, 4: p1.pref4 + p4.pref1,
-                           5: p1.pref5 + p5.pref1, 6: p1.pref6 + p6.pref1 }
-            print(matches_p1)
-            match_p1 = max(matches_p1, key=matches_p1.get)
-            print("Maximum value:", match_p1)
+
+            ## generate list of all possible combinations
+            import itertools
+            participants = [1, 2, 3, 4, 5, 6]
+            list_pairings = []
+            list_prefsum = []
+            for pair in itertools.permutations(participants, 2):
+                print(pair)
+                list_pairings.append(pair)
+                p = "p"
+                pref = "pref"
+                summant1 = p + str(pair[0]) + "." + pref + str(pair[1])
+                summant2 = p + str(pair[1]) + "." + pref + str(pair[0])
+                sum = eval(summant1) + eval(summant2)
+                print("sum is", sum)
+                list_prefsum.append(sum)
+                print(list_prefsum, "list prefsums")
+                print(list_pairings)
+
+                # generate dictionary with pairs (key) and their preference sums (dictionary)
+            dict_matches = dict(zip(list_pairings, list_prefsum))
+            print("dict is", dict_matches)
+            teams_list = []
+            teams_prefs = []
+            num_teams = 0
+            while num_teams < 3:
+                print("old dict", dict_matches)
+                max_value = max(dict_matches, key=dict_matches.get)
+                match_value = dict_matches[max_value]
+                teams_prefs.append(match_value)
+                print(match_value, "preference sum")
+                teams_list.append(max_value)
+                print(max_value[0])
+                ## delete all entries in which either the first or the second member of the new team is in (so all combinations containing these two members)
+                dict_matches = {k:v for k,v in dict_matches.items() if not max_value[0] in k}
+                dict_matches = {k: v for k, v in dict_matches.items() if not max_value[1] in k}
+                print("new dict", dict_matches)
+                num_teams = len(teams_list)
+            print(teams_list, "list of teams")
+
+            print(teams_prefs, "list of preferences")
+
+            for tupel in teams_list:
+                for p in group.get_players():
+                    participant = p.participant
+                    if tupel[0] == p.id_in_group:
+                        participant.pair = tupel
+                        participant.partner = tupel[1]
+                        p.team = tupel[1]
+                        print(p.team,"team member is")
+                        print(participant.partner)
+                    if tupel[1] == p.id_in_group:
+                        participant.partner = tupel[0]
+                        participant.pair = tupel
+                        p.team = tupel[0]
+                        print(p.team, "is member of the team")
+                    else:
+                        pass
+
+            team1 = teams_list[0]
+            team2 = teams_list[1]
+            team3 = teams_list[2]
             for p in group.get_players():
+            ## check if this works with multiple groups
                 participant = p.participant
-                if p.id_in_group == 1:
-                    participant.partner = match_p1
-                else:
-                    participant.partner = 0
-
-            print(p.participant.partner)
-
-
-        ## get participantid of gorup member p2 and store it as particpant variable for member 1 to have their matches
-
-
-
+                if team1[1] or team1[0] ==p.id_in_group:
+                    participant.team_name = "team1_s" + str(p.group.id_in_subsession)
+                    print(participant.team_name)
+                if team2[1] or team2[0] ==p.id_in_group:
+                    participant.team_name = "team2_s" + str(p.group.id_in_subsession)
+                    print(participant.team_name)
+                if team3[1] or team3[0] ==p.id_in_group:
+                    participant.team_name = "team2_s" + str(p.group.id_in_subsession)
+                    print(participant.team_name)
 
 class Last(Page):
     pass
 
-page_sequence = [Instructions, Call1, WaitPage1, Call2, WaitPage2, Call3, WaitPage3, Last]
-#page_sequence = [WaitPage1, Preferences2, WaitPage3, Last]
+#page_sequence = [Instructions, Call1, WaitPage1, Call2, WaitPage2, Call3, WaitPage3, Last]
+page_sequence = [Instructions, WaitPage1, Preferences2, WaitPage3, Last]

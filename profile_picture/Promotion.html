@@ -1,0 +1,44 @@
+
+
+{% block title %}
+    Bewerben Sie Ihre kreative Idee!
+{% endblock %}
+
+
+{% block styles %}
+<style>
+  .otree-form-errors {
+    visibility: hidden;
+    display: none;
+}
+  .divbild {
+    width:360px;
+    height:319px;
+    overflow:hidden;
+    z-index:0;
+    margin:0 auto;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if form.errors %}
+<div class="alert alert-danger" role="alert">
+    <p class="alert-heading">Bitte bewerben Sie ihre kreative Idee und geben sie ihr einen Score.</p>
+</div>
+{% endif %}
+<p>
+    Danke für das Hochladen des Bildes ihrer kreativen Idee.
+</p>
+ <div class="divbild">
+                        <img src="data:image/(png|jpeg);base64,{{ photo1 }}" style="max-width:100%; max-height: 150%;  "/>
+                    </div>
+
+
+<button class="otree-btn-next btn btn-primary">Weiter</button>
+
+{% endblock %}
+{% block scripts %}
+{% endblock %}
+

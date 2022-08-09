@@ -1,7 +1,9 @@
 from os import environ
+import os
 
 SESSION_CONFIGS = [
     dict(name='inno_teams', app_sequence=['intro', 'task_1', 'video_chat'], num_demo_participants=6),
+    dict(name='test', app_sequence=['video_chat'], num_demo_participants=6)
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
@@ -16,8 +18,9 @@ SESSION_CONFIG_DEFAULTS = dict(
 PARTICIPANT_FIELDS = ['order', 'partner', 'overallprofit','overallpayoffrealworld', 'finallocation','finalprofit',
                       'maxprofit','locdefault','locdefaulth1','locdefaulth2', 'stdvsugar', 'stdvlemon', 'stdvprice',
                       'stdvprice', 'stdvsugarh1','stdvlemonh1','stdvpriceh1','stdvsugarh2', 'stdvlemonh2',
-                      'stdvpriceh2','stdvprofit','stdvprofith1','stdvprofith2','maxexpphase','durexpphase', 'initial_sugar']
-SESSION_FIELDS = []
+                      'stdvpriceh2','stdvprofit','stdvprofith1','stdvprofith2','maxexpphase','durexpphase', 'initial_sugar', 'treat_video',
+                      'partner', 'team_name', 'pair','group6mem']
+SESSION_FIELDS = ['num_groups']
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
@@ -34,6 +37,8 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """ """
+
+
 
 SECRET_KEY = '1564016201268'
 
