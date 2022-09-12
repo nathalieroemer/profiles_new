@@ -2,10 +2,42 @@
 
 {% block styles %}
 <style>
+
   .otree-form-errors {
     visibility: hidden;
     display: none;
 }
+
+.flex-container {
+
+  display: flex;
+
+
+  flex-flow: wrap;
+  list-style: none;
+
+  justify-content: space-around;
+
+  gap: 10px;
+  gap: 10px 20px; /* row-gap column gap */
+  row-gap: 10px;
+  column-gap: 20px;
+
+  padding: 0;
+  margin: 0;
+  background: white;
+}
+
+
+.wrap    {
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.flex-item {
+
+}
+
   .divbild {
     width:280px;
     height:296px;
@@ -14,40 +46,42 @@
     margin:0 auto;
 }
 
-.profile {
-  display: inline-block;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  max-width: 300px;
-  margin: 10px;
-  text-align: center;
-  height: 500px;
-  justify-self: center;
+  .profile {
+    display: inline-block;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: 10px;
+    text-align: center;
+    height: 500px;
+    justify-self: center;
 }
 
-.field {
+  .field {
     max-width: 100px;
 }
 
-.title {
-  color: grey;
-  font-size: 18px;
+  .title {
+    color: grey;
+    font-size: 18px;
 }
 
 .wrapper {
     display: flex;
 }
+
+
+
 </style>
 {% endblock %}
 
 
 {{ block content }}
 
-<table>
- <tr>
 
-{{ for number in order }}
-<td>
-   {{ if number == 1 }}
+<ul class="flex-container">
+
+            <li class="flex-item" id="item1">
+
 <div class="profile">
                 <div class="divbild">
                         <img src="data:image/(png|jpeg);base64,{{ pic1 }}" style="max-width:100%; max-height: 150%;  "/>
@@ -60,12 +94,11 @@
     </center>
 <br>
     </div>
-   {{ endif }}
-</td>
-     <td>
-<br>
-     {{ if number == 2 }}
-<div class="profile">
+          </li>
+
+            <li class="flex-item" id="item2">
+
+<div class="profile" >
                 <div class="divbild">
                         <img src="data:image/(png|jpeg);base64,{{ pic2 }}" style="max-width:100%; max-height: 150%;  "/>
                     </div>
@@ -77,13 +110,10 @@
     </center>
 <br>
     </div>
-   {{ endif }}
-<br>
-         </td>
+           </li>
 
-        <td>
-      {{ if number == 3 }}
-<div class="profile">
+            <li class="flex-item" id="item3">
+<div class="profile" >
                 <div class="divbild">
                         <img src="data:image/(png|jpeg);base64,{{ pic3 }}" style="max-width:100%; max-height: 150%;  "/>
                     </div>
@@ -95,12 +125,10 @@
     </center>
 <br>
     </div>
-   {{ endif }}
-            </td>
-<br>
-         <td>
-      {{ if number == 4 }}
-<div class="profile">
+          </li>
+
+            <li class="flex-item" id="item4">
+<div class="profile" id="item4">
                 <div class="divbild">
                         <img src="data:image/(png|jpeg);base64,{{ pic4 }}" style="max-width:100%; max-height: 150%;  "/>
                     </div>
@@ -112,14 +140,12 @@
     </center>
 <br>
     </div>
-   {{ endif }}
-</td>
-<br>
-      </tr>
-    <tr>
-        <td>
-      {{ if number == 5 }}
-<div class="profile">
+            </li>
+
+
+    <li class="flex-item" id="item5">
+
+<div class="profile" id="item5">
                 <div class="divbild">
                         <img src="data:image/(png|jpeg);base64,{{ pic5 }}" style="max-width:100%; max-height: 150%;  "/>
                     </div>
@@ -131,12 +157,10 @@
     </center>
 <br>
     </div>
-   {{ endif }}
-<br>
-         </td>
-        <td>
-      {{ if number == 6 }}
-<div class="profile">
+         </li>
+
+     <li class="flex-item" id="item6">
+<div class="profile" id="item6">
                 <div class="divbild">
                         <img src="data:image/(png|jpeg);base64,{{ pic6 }}" style="max-width:100%; max-height: 150%;  "/>
                     </div>
@@ -148,20 +172,33 @@
     </center>
 <br>
     </div>
+        </li>
 
-   {{ endif }}
-        </td>
-         </tr>
-      </table>
+</ul>
 
    <input  type="hidden" name="pref{{self}}" id="pref{{self}}" value="0">
 
-{{ endfor }}
+
 
 
 
 
 <button class="otree-btn-next btn btn-primary">Next</button>
+
+<script>
+
+    let order = js_vars.order;
+
+
+    for (let i = 1; i < 7; i++) {
+        id = "item" + order[i];
+        document.getElementById(id).style.order = i;
+    };
+
+
+
+
+</script>
 
 {{ endblock }}
 

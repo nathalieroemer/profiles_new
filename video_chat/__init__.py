@@ -76,8 +76,15 @@ class Preferences(Page):
         return dict(
             order=order,
             p1 = p1, p2 = p2, p3=p3, p4=p4, p5=p5, p6=p6, self=self,
-        pic1=pic1, pic2=pic2, pic3=pic3, pic4=pic4, pic5=pic5, pic6=pic6,
-        name1=name1, name2=name2, name3=name3, name4=name4, name5=name5, name6=name6)
+            pic1=pic1, pic2=pic2, pic3=pic3, pic4=pic4, pic5=pic5, pic6=pic6,
+            name1=name1, name2=name2, name3=name3, name4=name4, name5=name5, name6=name6
+        )
+
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            order=[1,6,3,4,5,2]
+        )
 
 
 class Last(Page):
