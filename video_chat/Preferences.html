@@ -1,44 +1,168 @@
+
+
+{% block styles %}
+<style>
+  .otree-form-errors {
+    visibility: hidden;
+    display: none;
+}
+  .divbild {
+    width:280px;
+    height:296px;
+    overflow:hidden;
+    z-index:0;
+    margin:0 auto;
+}
+
+.profile {
+  display: inline-block;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: 10px;
+  text-align: center;
+  height: 500px;
+  justify-self: center;
+}
+
+.field {
+    max-width: 100px;
+}
+
+.title {
+  color: grey;
+  font-size: 18px;
+}
+
+.wrapper {
+    display: flex;
+}
+</style>
+{% endblock %}
+
+
 {{ block content }}
 
+<table>
+ <tr>
 
 {{ for number in order }}
-    {{ if group.get_player_by_id(1) = number }}
-        erste anzeige
-        this is player {{ p.id_in_group }}
-    <td><input class="form-check-input" type="number" name="pref{{ p.id_in_group }}" value="True"></td>
-    </tr>
-    {{ endif }}
-<br>
-    {{ if group.get_player_by_id(2) = number }}
-zweite anzeige
-        this is player 2
-    <td><input class="form-check-input" type="number" name="pref{{ p.id_in_group }}" value="True"></td>
-    </tr>
-    {{ endif }}
-<br>
-    {{ if p.id_in_group == third_id }}
-        this is player {{ p.id_in_group }}
-    <td><input class="form-check-input" type="number" name="pref{{ p.id_in_group }}" value="True"></td>
-    </tr>
-    {{ endif }}
-<br>
-    {{ if p.id_in_group == fourth_id }}
-        this is player  {{ p.id_in_group }}
-    <td><input class="form-check-input" type="number" name="pref{{ p.id_in_group }}" value="True"></td>
-    </tr>
-    {{ endif }}
-<br>
-    {{ if p.id_in_group == fifth_id }}
-        this is player {{ p.id_in_group }}
-    <td><input class="form-check-input" type="number" name="pref{{ p.id_in_group }}" value="True"></td>
+<td>
+   {{ if number == 1 }}
+<div class="profile">
+                <div class="divbild">
+                        <img src="data:image/(png|jpeg);base64,{{ pic1 }}" style="max-width:100%; max-height: 150%;  "/>
+                    </div>
 
-    {{ endif }}
+       <h2> {{ name1 }} </h2>
+        <p class="title">Profit: XX thaler</p>
+    Your preference weight:
+    <center> <div class="field">{{ formfield 'pref1' label="" }}</div>
+    </center>
 <br>
-    {{ if p.id_in_group == player.id_in_group }}
-        this is the player herself
-    <td><input  type="hidden" name="pref{{ p.id_in_group }}" value="0"></td>
+    </div>
+   {{ endif }}
+</td>
+     <td>
+<br>
+     {{ if number == 2 }}
+<div class="profile">
+                <div class="divbild">
+                        <img src="data:image/(png|jpeg);base64,{{ pic2 }}" style="max-width:100%; max-height: 150%;  "/>
+                    </div>
 
-    {{ endif }}
+       <h1> {{ name2 }} </h1>
+        <p class="title">Profit: XX thaler</p>
+    Your preference weight:
+    <center> <div class="field">{{ formfield 'pref2' label="" }}</div>
+    </center>
 <br>
+    </div>
+   {{ endif }}
+<br>
+         </td>
+
+        <td>
+      {{ if number == 3 }}
+<div class="profile">
+                <div class="divbild">
+                        <img src="data:image/(png|jpeg);base64,{{ pic3 }}" style="max-width:100%; max-height: 150%;  "/>
+                    </div>
+
+       <h1> {{ name3 }} </h1>
+        <p class="title">Profit: XX thaler</p>
+    Your preference weight:
+    <center> <div class="field">{{ formfield 'pref3' label="" }}</div>
+    </center>
+<br>
+    </div>
+   {{ endif }}
+            </td>
+<br>
+         <td>
+      {{ if number == 4 }}
+<div class="profile">
+                <div class="divbild">
+                        <img src="data:image/(png|jpeg);base64,{{ pic4 }}" style="max-width:100%; max-height: 150%;  "/>
+                    </div>
+
+       <h1> {{ name4 }} </h1>
+        <p class="title">Profit: XX thaler</p>
+    Your preference weight:
+    <center> <div class="field">{{ formfield 'pref4' label="" }}</div>
+    </center>
+<br>
+    </div>
+   {{ endif }}
+</td>
+<br>
+      </tr>
+    <tr>
+        <td>
+      {{ if number == 5 }}
+<div class="profile">
+                <div class="divbild">
+                        <img src="data:image/(png|jpeg);base64,{{ pic5 }}" style="max-width:100%; max-height: 150%;  "/>
+                    </div>
+
+       <h1> {{ name5 }} </h1>
+        <p class="title">Profit: XX thaler</p>
+    Your preference weight:
+    <center> <div class="field">{{ formfield 'pref5' label="" }}</div>
+    </center>
+<br>
+    </div>
+   {{ endif }}
+<br>
+         </td>
+        <td>
+      {{ if number == 6 }}
+<div class="profile">
+                <div class="divbild">
+                        <img src="data:image/(png|jpeg);base64,{{ pic6 }}" style="max-width:100%; max-height: 150%;  "/>
+                    </div>
+
+       <h1> {{ name6 }} </h1>
+        <p class="title">Profit: XX thaler</p>
+    Your preference weight:
+    <center> <div class="field">{{ formfield 'pref6' label="" }}</div>
+    </center>
+<br>
+    </div>
+
+   {{ endif }}
+        </td>
+         </tr>
+      </table>
+
+   <input  type="hidden" name="pref{{self}}" id="pref{{self}}" value="0">
+
 {{ endfor }}
+
+
+
+
+<button class="otree-btn-next btn btn-primary">Next</button>
+
 {{ endblock }}
+
+

@@ -2,7 +2,6 @@ from os import environ
 import os
 
 SESSION_CONFIGS = [
-    dict(name='inno_teams', app_sequence=['intro', 'task_1', 'video_chat'], num_demo_participants=6),
     dict(name='test', app_sequence=['video_chat'], num_demo_participants=6)
 ]
 
@@ -12,14 +11,11 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
+    real_world_currency_per_point=0.10, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = ['order', 'partner', 'overallprofit','overallpayoffrealworld', 'finallocation','finalprofit',
-                      'maxprofit','locdefault','locdefaulth1','locdefaulth2', 'stdvsugar', 'stdvlemon', 'stdvprice',
-                      'stdvprice', 'stdvsugarh1','stdvlemonh1','stdvpriceh1','stdvsugarh2', 'stdvlemonh2',
-                      'stdvpriceh2','stdvprofit','stdvprofith1','stdvprofith2','maxexpphase','durexpphase', 'initial_sugar', 'treat_video',
-                      'partner', 'team_name', 'pair','group6mem']
+PARTICIPANT_FIELDS = ['order', 'partner', 'overallprofit', 'finallocation','finalprofit','treat_video',
+                      'partner', 'team_name', 'pair','group6mem', 'image_data', 'name']
 SESSION_FIELDS = ['num_groups']
 
 # ISO-639 code
@@ -27,8 +23,8 @@ SESSION_FIELDS = ['num_groups']
 LANGUAGE_CODE = 'en'
 
 # e.g. EUR, GBP, CNY, JPY
-REAL_WORLD_CURRENCY_CODE = 'USD'
-USE_POINTS = True
+REAL_WORLD_CURRENCY_CODE = ''
+USE_POINTS = False
 
 EXTENSION_APPS = ['otree_tools']
 
